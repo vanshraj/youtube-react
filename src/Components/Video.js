@@ -6,6 +6,7 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import {
 Card, Button, Col, Spinner, Alert,
 Row, Badge, Image } from 'react-bootstrap';
+import parse from 'html-react-parser';
 
 class Video extends Component {
   state = {
@@ -14,6 +15,7 @@ class Video extends Component {
   }
   componentDidMount() {
     axios.get(`${process.env.REACT_APP_API}api/${this.props.match.params.yid}`).then((res) =>{
+      console.log(parse(res.data.data.player));
       this.setState({
         video: res.data.data,
         loaded: true
@@ -29,28 +31,47 @@ class Video extends Component {
         <Card>
           <Card.Body>
             <Row>
-              <Col xs={6} md={4}>
-              <Card.Img src={video.thumbnails.high.url} alt={video.title} />
-              <div className="box">
-                <span className="mr-1">{video.likes} </span> <Badge color="secondary" className="mr-2"><AiFillLike /></Badge>
-                <span className="mr-1">{video.dislikes} </span> <Badge color="secondary"><AiFillDislike /></Badge>
-              </div>
+              <Col xs={12} md={8}>
+                <Col xs={12} md={12}>
+                  <div className="video-container">
+                    <iframe src={parse(video.player).props.src+"?&autoplay=1&mute=1"} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen="true"></iframe>
+                  </div>
+                </Col>
+                <Col xs={12} md={12}>
+                <div className="box float-left">
+                  <span className="mr-1">{video.likes} </span> <Badge color="secondary" className="mr-2"><AiFillLike /></Badge>
+                  <span className="mr-1">{video.dislikes} </span> <Badge color="secondary"><AiFillDislike /></Badge>
+                </div>
+                <div className="box float-right">
+                  <span className="mr-1">{video.views} views</span>
+                </div>
+                </Col>
               </Col>
-              <Col xs={6} md={8}>
-                <Link to={`/${video.yid}`}>
+              <Col xs={12} md={4}>
+              <Card>
+                <Card.Body>
                   <Card.Title tag="h5">{video.title}</Card.Title>
-                </Link>
-                <Card.Subtitle tag="h6" className="mb-2 text-muted">{video.views} views</Card.Subtitle>
-                <Card.Subtitle tag="h6" className="mb-2 text-muted">
-                  <Row className="box">
-                    <Col xs={1} md={1}><Image roundedCircle fluid src={video.channel_thumb.default.url} alt={video.channelTitle} /></Col>
-                    <Col xs={11} md={11}>{video.channelTitle}</Col>
-                  </Row>
-                </Card.Subtitle>
-                <Card.Text>{video.description.substr(0, 200) + '...'}</Card.Text>
+                  <Card.Subtitle tag="h6" className="mb-2 text-muted">
+                    <Row className="box">
+                      <Col xs={2} md={2}><Image roundedCircle fluid src={video.channel_thumb.default.url} alt={video.channelTitle} /></Col>
+                      <Col xs={10} md={10}>{video.channelTitle}<br/>{video.subs} subs</Col>
+                    </Row>
+                  </Card.Subtitle>
+                  </Card.Body>
+                </Card>
               </Col>
             </Row>
-          </Card.Body>
+            <Card>
+              <Card.Body>
+                  <Row >
+                  <Col xs={12} md={12} >
+                    <Card.Title tag="h5">Description</Card.Title>
+                    <Card.Text className="text-justify">{video.description}</Card.Text>
+                  </Col>
+                  </Row>
+                </Card.Body>
+            </Card>
+            </Card.Body>
         </Card> );
     } else if(this.state.loaded) { //not found
       vidCont = (
@@ -66,7 +87,7 @@ class Video extends Component {
         );
     }
     return (
-      <div className="App container">
+      <div className="container">
         <Row className="mt-4 mb-4" >
           <h3>Go to home page.. </h3>
           <Link to={'/'}>
