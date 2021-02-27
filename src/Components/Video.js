@@ -12,7 +12,7 @@ class Video extends Component {
     video:null,
     loaded:false
   }
-  componentWillMount() {
+  componentDidMount() {
     axios.get(`http://localhost:3000/api/${this.props.match.params.yid}`).then((res) =>{
       this.setState({
         video: res.data.data,
@@ -30,7 +30,7 @@ class Video extends Component {
           <Card.Body>
             <Row>
               <Col xs={6} md={4}>
-              <Card.Img top thumbnail src={video.thumbnails.high.url} alt={video.title} />
+              <Card.Img src={video.thumbnails.high.url} alt={video.title} />
               <div className="box">
                 <span className="mr-1">{video.likes} </span> <Badge color="secondary" className="mr-2"><AiFillLike /></Badge>
                 <span className="mr-1">{video.dislikes} </span> <Badge color="secondary"><AiFillDislike /></Badge>
