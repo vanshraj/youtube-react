@@ -13,11 +13,12 @@ class Home extends Component {
     loaded:false
   }
   componentDidMount(){
+    console.log(`${process.env.REACT_APP_API}api`);
     this.getVideos();
   }
 
   getVideos(){
-    axios.get('http://localhost:3000/api').then((res) =>{
+    axios.get(`${process.env.REACT_APP_API}api`).then((res) =>{
       console.log(res.data.data);
       this.setState({
         videos: res.data.data,
@@ -30,7 +31,7 @@ class Home extends Component {
       this.setState({
         loaded: false
       });
-      axios.get('http://localhost:3000/api/add').then((res) =>{
+      axios.get(`${process.env.REACT_APP_API}api/add`).then((res) =>{
         console.log(res.data.updated);
         this.getVideos();
       });
@@ -40,7 +41,7 @@ class Home extends Component {
       this.setState({
         loaded: false
       });
-      axios.delete('http://localhost:3000/api').then((res) =>{
+      axios.delete(`${process.env.REACT_APP_API}api/`).then((res) =>{
         console.log(res.data.result);
         this.getVideos();
       });

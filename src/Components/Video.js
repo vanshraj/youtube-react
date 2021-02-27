@@ -13,7 +13,7 @@ class Video extends Component {
     loaded:false
   }
   componentDidMount() {
-    axios.get(`http://localhost:3000/api/${this.props.match.params.yid}`).then((res) =>{
+    axios.get(`${process.env.REACT_APP_API}api/${this.props.match.params.yid}`).then((res) =>{
       this.setState({
         video: res.data.data,
         loaded: true
