@@ -6,7 +6,13 @@ The reaact app is deployed on the follwing link. [https://youtube22app.herokuapp
 
 ## Available Scripts
 
+Before running this project make sure the api server in also running on 3000 port which this 
+front end project uses.
+
 In the project directory, you can run:
+
+### `npm install`
+This will install all the dependencies required for the project.
 
 ### `npm start`
 
